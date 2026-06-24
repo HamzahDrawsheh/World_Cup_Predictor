@@ -11,8 +11,8 @@ MODELS_DIR = ROOT / "models"
 
 REQUIRED_MODELS = [
     "xgb_outcome.pkl",
-    "poisson_home.pkl",
-    "poisson_away.pkl",
+    "poisson_home.json",
+    "poisson_away.json",
     "scaler.pkl",
     "imputer.pkl",
     "poisson_imputer.pkl",

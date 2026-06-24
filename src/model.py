@@ -70,6 +70,40 @@ TEAM_STAT_SUFFIXES = [
 ]
 
 
+class PoissonGoalModel:
+    """Lightweight Poisson regressor (JSON-serializable, no sklearn pickle)."""
+
+    def __init__(self, coef: np.ndarray, intercept: float) -> None:
+        self.coef_ = np.asarray(coef, dtype=float)
+        self.intercept_ = float(intercept)
+
+    def predict(self, X) -> np.ndarray:
+        X = np.asarray(X, dtype=float)
+        return np.exp(X @ self.coef_ + self.intercept_)
+
+
+def save_poisson_model(model: PoissonRegressor, path: Path) -> None:
+    """Save Poisson coefficients as JSON for cross-version compatibility."""
+    intercept = model.intercept_
+    if isinstance(intercept, np.ndarray):
+        intercept = float(intercept.ravel()[0])
+    payload = {"coef": model.coef_.tolist(), "intercept": float(intercept)}
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(payload, f, indent=2)
+
+
+def load_poisson_model(path: Path) -> PoissonGoalModel:
+    """Load Poisson model from JSON (preferred) or legacy joblib pickle."""
+    if path.suffix == ".json":
+        with open(path, encoding="utf-8") as f:
+            payload = json.load(f)
+        return PoissonGoalModel(payload["coef"], payload["intercept"])
+    legacy = joblib.load(path)
+    if isinstance(legacy, PoissonGoalModel):
+        return legacy
+    return PoissonGoalModel(legacy.coef_, float(np.ravel(legacy.intercept_)[0]))
+
+
 def _feature_columns(df: pd.DataFrame) -> list[str]:
     return [c for c in df.columns if c not in EXCLUDE_COLS]
 
@@ -203,8 +237,8 @@ def predict_match(
 def load_models() -> tuple:
     """Load trained models and preprocessors from models/."""
     xgb_model = joblib.load(MODELS_DIR / "xgb_outcome.pkl")
-    poisson_home = joblib.load(MODELS_DIR / "poisson_home.pkl")
-    poisson_away = joblib.load(MODELS_DIR / "poisson_away.pkl")
+    poisson_home = load_poisson_model(MODELS_DIR / "poisson_home.json")
+    poisson_away = load_poisson_model(MODELS_DIR / "poisson_away.json")
     scaler = joblib.load(MODELS_DIR / "scaler.pkl")
     imputer = joblib.load(MODELS_DIR / "imputer.pkl")
     poisson_imputer = joblib.load(MODELS_DIR / "poisson_imputer.pkl")
@@ -247,8 +281,8 @@ def retrain_poisson_models(features_df: pd.DataFrame | None = None) -> None:
     print(f"Poisson away MAE: {np.mean(np.abs(away_pred - test_df['away_goals'])):.4f}")
     print(f"Poisson home coef (non-zero): {np.count_nonzero(poisson_home.coef_)}/{len(poisson_home.coef_)}")
 
-    joblib.dump(poisson_home, MODELS_DIR / "poisson_home.pkl")
-    joblib.dump(poisson_away, MODELS_DIR / "poisson_away.pkl")
+    save_poisson_model(poisson_home, MODELS_DIR / "poisson_home.json")
+    save_poisson_model(poisson_away, MODELS_DIR / "poisson_away.json")
     joblib.dump(poisson_imputer, MODELS_DIR / "poisson_imputer.pkl")
     joblib.dump(poisson_scaler, MODELS_DIR / "poisson_scaler.pkl")
 
@@ -386,8 +420,8 @@ def train_models(features_df: pd.DataFrame | None = None) -> None:
     }
 
     joblib.dump(xgb_model, MODELS_DIR / "xgb_outcome.pkl")
-    joblib.dump(poisson_home, MODELS_DIR / "poisson_home.pkl")
-    joblib.dump(poisson_away, MODELS_DIR / "poisson_away.pkl")
+    save_poisson_model(poisson_home, MODELS_DIR / "poisson_home.json")
+    save_poisson_model(poisson_away, MODELS_DIR / "poisson_away.json")
     joblib.dump(scaler, MODELS_DIR / "scaler.pkl")
     joblib.dump(imputer, MODELS_DIR / "imputer.pkl")
     joblib.dump(poisson_imputer, MODELS_DIR / "poisson_imputer.pkl")
