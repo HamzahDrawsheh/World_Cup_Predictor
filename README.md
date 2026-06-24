@@ -1,4 +1,4 @@
-# **World Cup 2026 Match Predictor**
+ # **World Cup 2026 Match Predictor** :trophy:
 
 ![Screenshot](./Flags.png)
 
