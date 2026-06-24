@@ -1,6 +1,6 @@
 # **World Cup 2026 Match Predictor**
 
-![Screenshot](./Screenshot%202026-06-24%20163117.png)
+![Screenshot](./Flags.png)
 
 Welcome to the World Cup 2026 Predictor. Pick any two teams to see predicted win, draw, and loss probabilities, expected goals, and head-to-head history. Run thousands of tournament simulations to explore championship odds for all 48 teams. Predictions are based on recent form, Elo ratings, and historical international results—not live odds or insider knowledge—so treat them as data-driven estimates, not guarantees.
 
