@@ -31,6 +31,16 @@ python -m venv .venv
 
 pip install -r requirements.txt
 python run_pipeline.py          # downloads data, trains models (~15 min first run)
+```
+
+For local **model training** (includes Optuna, Jupyter, etc.):
+
+```bash
+pip install -r requirements-dev.txt
+python run_pipeline.py
+```
+
+```bash
 streamlit run streamlit_app.py  # open http://localhost:8501
 ```
 
@@ -41,6 +51,8 @@ streamlit run streamlit_app.py  # open http://localhost:8501
 3. Click **Create app** → select `HamzahDrawsheh/World_Cup_Predictor`.
 4. **Main file:** `streamlit_app.py` (auto-detected if left default).
 5. Click **Deploy**.
+
+**If the app crashes:** open **Manage app → Settings** and set **Python version** to **3.11** (XGBoost does not support 3.14 yet).
 
 On first visit, the app downloads match data (~4 MB) and builds features (~30s). After that, predictions load instantly.
 

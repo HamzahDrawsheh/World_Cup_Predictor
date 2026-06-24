@@ -1,0 +1,7 @@
+# Extra dependencies for local training, notebooks, and Optuna tuning
+-r requirements.txt
+lightgbm
+matplotlib
+seaborn
+jupyter
+optuna

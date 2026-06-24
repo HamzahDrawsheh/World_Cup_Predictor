@@ -8,7 +8,6 @@ from pathlib import Path
 
 import joblib
 import numpy as np
-import optuna
 import pandas as pd
 import xgboost as xgb
 from scipy.stats import poisson
@@ -256,6 +255,8 @@ def retrain_poisson_models(features_df: pd.DataFrame | None = None) -> None:
 
 def train_models(features_df: pd.DataFrame | None = None) -> None:
     """Train, evaluate, and persist all models."""
+    import optuna
+
     MODELS_DIR.mkdir(parents=True, exist_ok=True)
 
     if features_df is None:
