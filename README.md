@@ -1,5 +1,7 @@
 # World Cup 2026 Match Predictor
 
+https://worldcuppredictor-zqxw5owmxxdahkx8xbbtjr.streamlit.app/
+
 Machine learning pipeline that predicts international football match outcomes and simulates the FIFA World Cup 2026 tournament.
 
 ## Live demo
