@@ -1,12 +1,10 @@
-# World Cup 2026 Match Predictor
-
-https://worldcuppredictor-zqxw5owmxxdahkx8xbbtjr.streamlit.app/
+# **World Cup 2026 Match Predictor**
 
 Machine learning pipeline that predicts international football match outcomes and simulates the FIFA World Cup 2026 tournament.
 
 ## Live demo
 
-Deploy to **[Streamlit Community Cloud](https://share.streamlit.io)** for a public link (no install needed for visitors).
+## **Visit** [Live Predictor demo](https://worldcuppredictor-zqxw5owmxxdahkx8xbbtjr.streamlit.app/) 
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://share.streamlit.io)
 
@@ -45,20 +43,6 @@ python run_pipeline.py
 ```bash
 streamlit run streamlit_app.py  # open http://localhost:8501
 ```
-
-## Deploy to Streamlit Cloud (share a public link)
-
-1. Push this repo to GitHub (models are included for cloud hosting).
-2. Go to [share.streamlit.io](https://share.streamlit.io) → sign in with GitHub.
-3. Click **Create app** → select `HamzahDrawsheh/World_Cup_Predictor`.
-4. **Main file:** `streamlit_app.py` (auto-detected if left default).
-5. Click **Deploy**.
-
-**If the app crashes:** open **Manage app → Settings** and set **Python version** to **3.11** (XGBoost does not support 3.14 yet).
-
-On first visit, the app downloads match data (~4 MB) and builds features (~30s). After that, predictions load instantly.
-
-**App URL format:** `https://<your-app-name>.streamlit.app`
 
 ## Project structure
 
