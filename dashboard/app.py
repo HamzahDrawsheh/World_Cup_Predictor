@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from src.bootstrap import ensure_artifacts
 from src.data_loader import clean_data, load_results
 from src.elo import EloRating
 from src.model import build_feature_lookup, load_models, predict_match
@@ -51,6 +52,13 @@ def confederation(team: str) -> str:
         if team in teams:
             return conf
     return "Other"
+
+
+@st.cache_resource(show_spinner="Preparing data (first load only, ~30s)…")
+def ensure_deployment_ready() -> bool:
+    """Download data and build features on Streamlit Cloud if needed."""
+    ensure_artifacts()
+    return True
 
 
 @st.cache_data(show_spinner=False)
@@ -388,6 +396,7 @@ def page_model_report() -> None:
 
 def main() -> None:
     st.set_page_config(page_title="WC 2026 Predictor", layout="wide")
+    ensure_deployment_ready()
     st.title("World Cup 2026 Predictor")
 
     page = st.sidebar.radio(

@@ -23,13 +23,14 @@ Thumbs.db
 # Streamlit
 .streamlit/secrets.toml
 
-# Generated data & models (recreated via run_pipeline.py)
+# Generated data (recreated on first app load or via run_pipeline.py)
 data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
-models/*
-!models/.gitkeep
+
+# Trained models — committed for Streamlit Cloud (see models/*.pkl)
+# Run `python run_pipeline.py` locally to regenerate after retraining.
 
 # Jupyter
 .ipynb_checkpoints/
